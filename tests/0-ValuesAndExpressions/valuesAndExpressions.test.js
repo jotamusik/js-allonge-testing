@@ -10,7 +10,12 @@ describe('Values And Expressions', function () {
             expect(2 === '2').toBeFalsy();
             expect(true !== 'true').toBeTruthy();
         });
+    });
 
+    describe('Reference Types', function () {
+        test('should not be the same', function() {
+            expect([2-1, 2, 2+1]).not.toBe([1, 1+1, 1+1+1]);
+        });
     });
 
 });
