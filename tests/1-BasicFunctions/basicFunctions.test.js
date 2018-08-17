@@ -60,4 +60,25 @@ describe('Basic Functions', function () {
             expect(foo(1)(1)(1)).toBe(3);
         });
     });
+
+    describe('Arguments variable inside a function', function () {
+        test('should be able to access the parameters through the arguments variable', function () {
+            function foo() {
+                return arguments.length;
+            }
+            expect(foo(1,2)).toBe(2);
+            expect(foo(1)).toBe(1);
+        });
+    });
+
+    describe('Diferent Ways to call a function', function () {
+        test('should call the function', function () {
+            function foo(a, b) {
+                return a + b;
+            }
+            expect( foo(1,1) ).toBe(2);
+            expect( foo.call(this, 1, 1) ).toBe(2);
+            expect( foo.apply(this,[1, 1]) ).toBe(2);
+        });
+    });
 });
