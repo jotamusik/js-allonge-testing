@@ -63,9 +63,7 @@ describe('Basic Functions', function () {
 
     describe('Arguments variable inside a function', function () {
         test('should be able to access the parameters through the arguments variable', function () {
-            function foo() {
-                return arguments.length;
-            }
+            function foo() { return arguments.length; }
             expect(foo(1,2)).toBe(2);
             expect(foo(1)).toBe(1);
         });
@@ -73,12 +71,44 @@ describe('Basic Functions', function () {
 
     describe('Diferent Ways to call a function', function () {
         test('should call the function', function () {
-            function foo(a, b) {
-                return a + b;
-            }
+            function foo(a, b) { return a + b; }
             expect( foo(1,1) ).toBe(2);
             expect( foo.call(this, 1, 1) ).toBe(2);
             expect( foo.apply(this,[1, 1]) ).toBe(2);
+        });
+    });
+
+    describe('Partial Functions Application', function () {
+        test('should build the diferent functions', function () {
+
+            // ToDo: Revisar y tratar de entender mejor ...
+
+            let _slice = Array.prototype.slice;
+
+            function callFirst(fn, larg) {
+                return function () {
+                    let args = _slice.call(arguments, 0);
+                    return fn.apply(this, [larg].concat(args));
+                }
+            }
+
+            function callLast(fn, rarg) {
+                return function () {
+                    let args = _slice.call(arguments, 0);
+                    return fn.apply(this, args.concat([rarg]));
+                }
+            }
+
+            function greet(me, you) {
+                return "Hello, " + you + ", my name is " + me;
+            }
+
+            let heliosSaysHello = callFirst(greet, 'Helios');
+            expect(heliosSaysHello('Eartha')).toBe('Hello, Eartha, my name is Helios');
+
+            let sayHelloToCeline = callLast(greet, 'Celine');
+            expect(sayHelloToCeline('Eartha')).toBe('Hello, Celine, my name is Eartha');
+
         });
     });
 });
